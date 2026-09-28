@@ -1,3 +1,5 @@
+import objective
+
 class Quest:
     def __init__(self,name,giver='f00',objective=None,reward=(200,200)):
         self.name = name

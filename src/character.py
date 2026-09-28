@@ -42,8 +42,8 @@ class Character:
         self.life += amount
 
     def calculate_equip_effect(self):
-        for e in self.equip:
-            pass
+        for i in self.equip:
+            i.apply_attrib(self)
 
     def is_alive(self):
         if self.life <= 0: self.is_alive = False
