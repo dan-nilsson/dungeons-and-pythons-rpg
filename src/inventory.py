@@ -1,3 +1,5 @@
+from item import Item
+
 class Inventory:
     def __init__(self,items=None,size=10):
         self.items if items else []

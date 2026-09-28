@@ -1,4 +1,4 @@
-import objective
+from objective import Objective
 
 class Quest:
     def __init__(self,name,giver='f00',objective=None,reward=(200,200)):

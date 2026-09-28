@@ -1,12 +1,12 @@
-import inventory
-import quest
-import character as Character
+from inventory import Inventory
+from quest import Quest
+from character import Character
 
 class Hero(Character):
-    def __init__(self,name,char_class,attrib=None,pos=None,equip=None,lvl=None,gold=500,inv=None,quests=None):
-        super().__init__(name,char_class,attrib,pos,equip,lvl)      #superclass Character init
+    def __init__(self,name,c_class,attrib=None,pos=None,equip=None,lvl=None,gold=500,inv=None,quests=None):
+        super().__init__(name,c_class,attrib,pos,equip,lvl)      #superclass Character init
         self.gold = gold                                            #player gold, not currently used
-        self.inv = inv if inv else Inventory()                      #player inventory
+        self.inv = inv #if inv else Inventory()                      #player inventory
         self.quests = quests if quests else []                      #player quests
 
     def accept_quest(self,quest):
