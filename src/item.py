@@ -20,3 +20,7 @@ class Item:
 
     def repair_durability(self):
         self.durability = 100
+
+    def check_durability(self):
+        print(f'Current durability for {self.name} is {self.durability}.')
+        return self.durability
