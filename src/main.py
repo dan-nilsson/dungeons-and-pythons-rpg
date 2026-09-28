@@ -18,6 +18,7 @@ def main():
         enemy_dmg,enemy_crit = enemy.attack(hero)
         print(hero_dmg,hero_crit)
         print(hero.equip['armor']['helm'].name)
+        print(hero)
         input()
 
 if __name__ == '__main__':

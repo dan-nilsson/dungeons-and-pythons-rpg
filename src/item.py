@@ -15,7 +15,7 @@ class Item:
     def apply_attrib(self,char):
         if not self.attrib: return
         for k,v in self.attrib.items():
-            char.attrib[k] += v * rarity_scalar[self.rarity]
+            char.attrib[k] += v * self.rarity_scalar[self.rarity]
 
     def lose_durability(self,amount):
         self.durability -= amount
@@ -37,12 +37,12 @@ class Weapon(Item):
         self.damage = damage
 # 
     def calculate_damage(self,base):
-       return base + self.damage * self.rarity_scalar[self.rarity]
+       return base + (self.damage * self.rarity_scalar[self.rarity])
 
 iron_sword = Weapon('Iron Sword',wep_type='sharp',damage=10)
 wand = Weapon('Magic Wand',wep_type='magic',damage=12)
 short_bow = Weapon('Short bow',wep_type='bow',damage=8)
-fists = Weapon('Fists',wep_type='blunt',damage=5)
+fists = Weapon('Fists',wep_type='blunt',damage=1)
 
 armor_slots = ['helm','body','gloves','boots']
 

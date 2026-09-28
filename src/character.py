@@ -3,8 +3,7 @@ import random
 from level import Level
 from inventory import Inventory
 from quest import Quest
-from item import fists
-from item import linen_armors,leather_armors
+from item import fists, linen_armors,leather_armors
 
 c_classes = ['warrior','wizard','beast']
 init_attrib = { 'warrior' : {'stam' : 15, 'int' : 10, 'str' : 20, 'armor' : 0},
@@ -25,22 +24,23 @@ class Character:
         self.pos = pos if pos else (0,0)                                        #not currently used
         self.equip = equip if equip else init_equip[c_class].copy()             #equipment
         self.lvl = lvl if lvl else Level(1)                                     #level, Level()
+        self.calculate_armor_effect()
         self.calculate_init_health_mana()                                       #sets character life,mana from attrib
         self.is_alive = True                                                    #character is alive
 
-    def __str___(self):
-        return 'hello'
+    def __str__(self):
+        return f'Character {self.name} with {self.life}/{self.max_life}'
 
     def calculate_init_health_mana(self):
-        self.max_life = self.attrib['stam'] * 10
-        self.max_mana = self.attrib['int'] * 10
+        self.max_life = self.attrib['stam'] * 10 + 500
+        self.max_mana = self.attrib['int'] * 10 + 200
         self.life, self.mana = self.max_life, self.max_mana
 
     def move(self,new_pos):
         self.pos = new_pos
 
     def attack(self,target):
-        base_dmg = self.attrib['str'] * 10
+        base_dmg = self.attrib['str'] * 2
         damage = self.equip['wep'].calculate_damage(base_dmg)
         crit = random.random() <= 0.2
         return target.defend(damage * (2 if crit else 1)), crit
@@ -58,6 +58,7 @@ class Character:
         final_dmg = dmg - self.attrib['armor']
         if final_dmg > 0: self.life -= final_dmg
         print(f'{self.name} takes {final_dmg} damage.')
+        if self.life <= 0: self.is_alive = False
         if not self.is_alive: self.defeat()
 
     def heal(self,amount):
@@ -66,20 +67,17 @@ class Character:
     def calculate_armor_effect(self):
         if not self.equip: return
         for armor in self.equip['armor'].values():
-            armor.apply_attrib(self)
-
-    def is_alive(self):
-        if self.life <= 0: self.is_alive = False
-        return self.is_alive
+            if armor: armor.apply_attrib(self)
 
     def defeat(self):
-        print(f'Character {self.name} is defeated.')
+        suffix = 'defeated' if isinstance(self,Hero) else 'slain'
+        print(f'{self.name} is {suffix}.')
 
 class Hero(Character):
     def __init__(self,name,c_class,attrib=None,pos=None,equip=None,lvl=None,gold=500,inv=None,quests=None):
         super().__init__(name,c_class,attrib,pos,equip,lvl)      #superclass Character init
         self.gold = gold                                            #player gold, not currently used
-        self.inv = inv #if inv else Inventory()                      #player inventory
+        self.inv = inv if inv else Inventory()                      #player inventory
         self.quests = quests if quests else []                      #player quests
     
     def accept_quest(self,quest):
@@ -93,6 +91,7 @@ class Hero(Character):
 
     def equip_item(self,item):
         if item.get_type() == 'wep':
+            self.loot_item(self.equip['wep'])
             self.equip['wep'] = item
         else:
             self.loot_item(self.equip['armor'][item.get_slot()])
