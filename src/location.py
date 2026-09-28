@@ -1,6 +1,10 @@
 class Location:
-    biomes = set(['village','castle','forest','cave','desert'])
-    biome_to_enemy = {'forest': ['wolf'],'cave' : ['bear'],'desert' : ['scorpion']}
+    biomes = set(['village','castle','forest','cave','desert','boss_lair'])
+    biome_to_enemy = {  'forest': ['Wolf','Bandit'],
+                        'field' : ['Cougar','Ruffian'],
+                        'cave' : ['Bear','Ghost'],
+                        'desert' : ['Scorpion','Snake'],
+                        'boss_lair' : ['Dragon']}
 
     def __init__(self,name,biome=None,is_hostile=False):
         self.name = name

@@ -1,7 +1,7 @@
-item_rarities = set(['Common','Rare','Epic','Legendary'])
-rarity_scalar = {'Common' : 1, 'Rare' : 1.5, 'Epic' : 2, 'Legendary' : 5}
-
 class Item:
+    item_rarities = set(['Common','Rare','Epic','Legendary'])
+    rarity_scalar = {'Common' : 1, 'Rare' : 1.5, 'Epic' : 2, 'Legendary' : 5}
+
     def __init__(self,name,rarity='Common',attrib=None):
         self.name = name
         self.rarity = rarity

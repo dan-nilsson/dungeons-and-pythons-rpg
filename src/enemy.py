@@ -6,3 +6,11 @@ class Enemy(Entity):
 
     def drop_loot(self):
         return self.equip
+
+    def name_with_prefix(self):
+        lvl = self.lvl.current_lvl
+        prefix = 'Timid' if lvl<10 else 'Trickster'
+        if lvl >= 55: prefix = 'Legendary'
+        elif lvl >= 45: prefix = 'Viscious'
+        elif lvl >= 35: prefix = 'Snarling'       
+        return f'{prefix} {self.name}'
