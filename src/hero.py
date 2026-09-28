@@ -1,5 +1,6 @@
 import inventory
 import quest
+import character as Character
 
 class Hero(Character):
     def __init__(self,name,char_class,attrib=None,pos=None,equip=None,lvl=None,gold=500,inv=None,quests=None):

@@ -1,16 +1,17 @@
-import level
-import hero,enemy
+import random
+
+from level import Level
 import weapon,armor
 
 c_classes = ['warrior','wizard','beast']
 init_attrib = { 'warrior' : {'stam' : 15, 'int' : 10, 'str' : 20, 'armor' : 0},
                 'wizard' : {'stam': 15, 'int': 20, 'str': 10, 'armor' : 0}}
-init_equip = {  'warrior' : {'wep' : Weapon('Fists'), 'armor' : 
-                {'helm' : Armor('Leather Cap','helm',attrib={'stam' : 10, 'armor' : 15}), 'body' : None, 
-                'gloves' : None, 'boots' : Armour('Leather Sandals','boots',attrib={'armor' : 15})}},
-                'wizard' : {'wep' : Weapon('Fists'), 'armor' : 
-                {'helm' : Armor('Linen Hat','helm',attrib={'int' : 10, 'armor' : 10}), 'body' : None, 
-                'gloves' : None, 'boots' : Armour('Linen Slippers','boots',attrib={'armor' : 10})}},
+init_equip = {  'warrior' : {'wep' : weapon.fists, 'armor' : 
+                {'helm' : armor.leather_armors['helm'], 'body' : None, 
+                'gloves' : None, 'boots' : armor.leather_armors['boots']}},
+                'wizard' : {'wep' : weapon.fists, 'armor' : 
+                {'helm' : armor.linen_armors['helm'], 'body' : None, 
+                'gloves' : None, 'boots' : armor.linen_armors['boots']}},
                 'beast' : None}
 
 
@@ -29,7 +30,8 @@ class Character:
     def calculate_init_health_mana(self):
         self.max_life = self.attrib['stam'] * 10
         self.max_mana = self.attib['int'] * 10
-        self.life, self.mana = self.max_life, self.max_mana
+        if not self.life and not self.mana:
+            self.life, self.mana = self.max_life, self.max_mana
 
     def move(self,new_pos):
         self.pos = new_pos
@@ -38,7 +40,7 @@ class Character:
         base_dmg = self.attrib['str'] * 10
         damage = self.equip['wep'].calculate_damage(base_dmg)
         crit = random.random() <= 0.2
-        target.defend(damage * (2 if crit else 1))
+        return target.defend(damage * (2 if crit else 1)), crit
 
     def defend(self,damage):
         dodge = random.random() <= 0.2

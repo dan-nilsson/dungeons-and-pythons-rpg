@@ -1,4 +1,5 @@
-import hero,enemy
+import hero
+import enemy
 import location
 
 class GameWorld:
@@ -10,6 +11,14 @@ class GameWorld:
         self.name = name 
         self.locations = locations if locations else world_layout.copy()
         self.current_pos = current_pos
+        self.hero = None
+        self.enemy = None
+
+    def add_hero(self,hero):
+        if not self.hero: self.hero = hero
+
+    def add_enemy(self,enemy):
+        if not self.enemy: self.enemy = enemy
 
     def add_locations(self,*args):
         for loc in args:
