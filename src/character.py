@@ -1,8 +1,10 @@
 import random
 
 from level import Level
-from weapon import fists
-from armor import linen_armors,leather_armors
+from inventory import Inventory
+from quest import Quest
+from item import fists
+from item import linen_armors,leather_armors
 
 c_classes = ['warrior','wizard','beast']
 init_attrib = { 'warrior' : {'stam' : 15, 'int' : 10, 'str' : 20, 'armor' : 0},
@@ -19,13 +21,15 @@ class Character:
     def __init__(self,name,c_class='warrior',attrib=None,pos=None,equip=None,lvl=None):
         self.name = name                                                        #character name
         self.c_class = c_class                                                  #character class
-        self.attrib = attrib if attrib else init_attrib[c_class].copy()      #character attributes
+        self.attrib = attrib if attrib else init_attrib[c_class].copy()         #character attributes
         self.pos = pos if pos else (0,0)                                        #not currently used
         self.equip = equip if equip else init_equip[c_class].copy()             #equipment
         self.lvl = lvl if lvl else Level(1)                                     #level, Level()
         self.calculate_init_health_mana()                                       #sets character life,mana from attrib
         self.is_alive = True                                                    #character is alive
-        if isinstance(self,Enemy): self.name = self.name_with_prefix()
+
+    def __str___(self):
+        return 'hello'
 
     def calculate_init_health_mana(self):
         self.max_life = self.attrib['stam'] * 10
@@ -43,8 +47,12 @@ class Character:
 
     def defend(self,damage):
         dodge = random.random() <= 0.2
-        if not dodge: self.take_dmg(damage)
-        else: print(f'{self.name} dodges the attack.')      
+        if not dodge: 
+            self.take_dmg(damage)
+            return damage
+        else: 
+            print(f'{self.name} dodges the attack.')
+            return 0
 
     def take_dmg(self,dmg):
         final_dmg = dmg - self.attrib['armor']
@@ -67,9 +75,33 @@ class Character:
     def defeat(self):
         print(f'Character {self.name} is defeated.')
 
+class Hero(Character):
+    def __init__(self,name,c_class,attrib=None,pos=None,equip=None,lvl=None,gold=500,inv=None,quests=None):
+        super().__init__(name,c_class,attrib,pos,equip,lvl)      #superclass Character init
+        self.gold = gold                                            #player gold, not currently used
+        self.inv = inv #if inv else Inventory()                      #player inventory
+        self.quests = quests if quests else []                      #player quests
+    
+    def accept_quest(self,quest):
+        self.quests.append(quest)
+
+    def get_inventory(self):
+        self.inv.list_items()
+
+    def loot_item(self, item) -> bool:
+        return self.inv.add_item(item)
+
+    def equip_item(self,item):
+        if item.get_type() == 'wep':
+            self.equip['wep'] = item
+        else:
+            self.loot_item(self.equip['armor'][item.get_slot()])
+            self.equip['armor'][item.get_slot()] = item
+
 class Enemy(Character):
     def __init__(self,name,c_class='warrior',attrib=None,pos=None,equip=None,lvl=None):
         super().__init__(name,c_class,attrib,pos,equip,lvl)         #superclass Character init
+        self.name = self.name_with_prefix()
 
     def aggro(self,target):     #not used
         if abs(self.pos[0] - target.pos[0]) <= 2 or abs(self.pos[1] - target.pos[1]) <= 2:
@@ -84,5 +116,4 @@ class Enemy(Character):
         if lvl >= 55: prefix = 'Legendary'
         elif lvl >= 45: prefix = 'Viscious'
         elif lvl >= 35: prefix = 'Snarling'  
-        return self.name     
         return f'{prefix} {self.name}'

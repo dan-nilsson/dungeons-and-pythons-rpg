@@ -1,6 +1,6 @@
-from hero import Hero
-from character import Enemy
-from location import Location
+# from hero import Hero
+# from character import Enemy
+# from location import Location
 
 class GameWorld:
     world_layout =  [   [None,None,None],
