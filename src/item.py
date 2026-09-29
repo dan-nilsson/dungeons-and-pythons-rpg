@@ -9,6 +9,13 @@ class Item:
         self.durability = 100
         self.broken = False
 
+    def __str__(self):
+        if self.get_item_type() == 'wep':
+            return f'Weapon: {self.rarity} {self.name} Damage: {self.calculate_damage(0)}'
+        return( f'{self.get_slot().capitalize()} Armor: {self.rarity} {self.name}'+
+                f' Attrib: {' '.join([f'{k.capitalize()} : {v}' for k,v in self.attrib.items()])}')
+        
+
     def apply_attrib(self,char):
         if not self.attrib: return
         for k,v in self.attrib.items():

@@ -26,18 +26,23 @@ class Character:
         self.pos = pos if pos else (0,0)                                        #not currently used
         self.equip = equip if equip else init_equip[c_class].copy()             #equipment
         self.lvl = lvl if lvl else Level(1)                                     #level, Level()
-        self.calculate_armor_effect()
+        self.calculate_armor_effect()                                           #applies armor attributes to char
         self.calculate_init_health_mana()                                       #sets character life,mana from attrib
         self.is_alive = True                                                    #character is alive
         self.hp_bar = HealthBar(self)
 
     def __str__(self):
-        return f'Character {self.name} with {self.life}/{self.max_life}'
+        return f'{self.name}\'s HEALTH: {self.life}/{self.max_life}'
 
     def calculate_init_health_mana(self):
         self.max_life = self.attrib['stam'] * 10 + 500
         self.max_mana = self.attrib['int'] * 10 + 200
         self.life, self.mana = self.max_life, self.max_mana
+
+    def calculate_armor_effect(self):
+        if not self.equip: return
+        for armor in self.equip['armor'].values():
+            if armor: armor.apply_attrib(self) 
 
     def move(self,new_pos):
         self.pos = new_pos
@@ -68,11 +73,6 @@ class Character:
     def heal(self,amount):
         self.life += amount
         self.hp_bar.update()
-
-    def calculate_armor_effect(self):
-        if not self.equip: return
-        for armor in self.equip['armor'].values():
-            if armor: armor.apply_attrib(self)
 
     def defeat(self):
         suffix = 'defeated' if self.char_type == 'hero' else 'slain'

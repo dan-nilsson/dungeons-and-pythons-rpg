@@ -3,9 +3,9 @@ from enemy import Enemy
 from location import Location
 
 class GameWorld:
-    world_layout =  [   [None,None,None],
-                        [None,None,None],
-                        [None,None,None]]
+    world_layout = [[None,None,None],
+                    [None,None,None],
+                    [None,None,None]]
 
     def __init__(self,name,locations=None,current_pos=(0,0)):
         self.name = name 
@@ -14,11 +14,14 @@ class GameWorld:
         self.hero = None
         self.enemies = []
 
+    def __str__(self):
+        return '\n'.join(*[row for row in locations])
+
     def add_hero(self,hero):
         if not self.hero: self.hero = hero
 
     def add_enemy(self,enemy):
-        if not self.enemy: self.enemies.append(enemy)
+        self.enemies.append(enemy)
 
     def add_locations(self,*args):
         for loc in args:

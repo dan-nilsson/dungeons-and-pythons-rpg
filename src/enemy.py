@@ -5,6 +5,14 @@ class Enemy(Character):
         super().__init__(name,c_class,attrib,pos,equip,lvl)         #superclass Character init
         self.name = self.name_with_prefix()
 
+    def name_with_prefix(self):
+        lvl = self.lvl.current_lvl
+        prefix = 'Timid' if lvl<10 else 'Trickster'
+        if lvl >= 55: prefix = 'Legendary'
+        elif lvl >= 45: prefix = 'Viscious'
+        elif lvl >= 35: prefix = 'Snarling'  
+        return f'{prefix} {self.name}'
+
     def char_type(self):
         return 'enemy'
 
@@ -14,11 +22,3 @@ class Enemy(Character):
 
     def drop_loot(self):
         return self.equip
-        
-    def name_with_prefix(self):
-        lvl = self.lvl.current_lvl
-        prefix = 'Timid' if lvl<10 else 'Trickster'
-        if lvl >= 55: prefix = 'Legendary'
-        elif lvl >= 45: prefix = 'Viscious'
-        elif lvl >= 35: prefix = 'Snarling'  
-        return f'{prefix} {self.name}'

@@ -13,7 +13,7 @@ class Hero(Character):
     
     def char_type(self):
         return 'hero'
-        
+
     def accept_quest(self,quest):
         self.quests.append(quest)
 
@@ -23,10 +23,11 @@ class Hero(Character):
     def loot_item(self, item) -> bool:
         return self.inv.add_item(item)
 
-    def equip_item(self,item):
-        if item.get_item_type() == 'wep':
-            self.loot_item(self.equip['wep'])
-            self.equip['wep'] = item
-        else:
-            self.loot_item(self.equip['armor'][item.get_slot()])
-            self.equip['armor'][item.get_slot()] = item
+    def equip_item(self,*args):
+        for item in args:
+            if item.get_item_type() == 'wep':
+                self.loot_item(self.equip['wep'])
+                self.equip['wep'] = item
+            else:
+                self.loot_item(self.equip['armor'][item.get_slot()])
+                self.equip['armor'][item.get_slot()] = item
