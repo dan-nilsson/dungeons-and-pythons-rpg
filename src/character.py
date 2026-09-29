@@ -35,7 +35,6 @@ class Character:
         self.calculate_health_mana()                                            #sets character life,mana from attrib
         self.is_alive = True                                                    #character is alive
         self.hp_bar = HealthBar(self)
-        # print(init_equip['warrior']['armor']['helm'])
 
     def __str__(self) -> str:
         return f'{'{:<25}'.format(f'{self.lvl} {self.name}\'s')}' + f'HEALTH: {self.life}/{self.max_life}'
@@ -78,22 +77,21 @@ class Character:
         return target.defend(damage * (2 if crit else 1)), crit
 
     def defend(self,damage):
-        dodge = random.random() <= 0.1
-        parry = (random.random() if not self.equip['wep'] == fists else 1) <= 0.1
+        d_rand,p_rand = random.random(),random.random()
+        dodge = d_rand <= 0.1
+        parry = (p_rand if not self.equip['wep'] == fists else 1) <= 0.1
         if not dodge and not parry: 
             return self.take_dmg(damage)
         else:
             if parry: self.equipped_wep().lose_durability(1)
-            # print(f'{self.name} {'dodges' if dodge else 'parries'} the attack.')
-            return 0 if dodge else -1
+            return -1 if dodge else -2
 
     def take_dmg(self,dmg) -> float:
         final_dmg = dmg - self.attrib['armor']
         if final_dmg > 0: self.life -= final_dmg
-        # print(f'{self.name} takes {final_dmg} damage.') # no longer needed with healthbar impl
         self.hp_bar.update()
         if self.life <= 0: self.is_alive = False
-        return final_dmg
+        return final_dmg if final_dmg >= 0 else 0
 
     def heal(self,amount):
         self.life += amount

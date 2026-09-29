@@ -7,39 +7,22 @@ import os
 from gameworld import GameWorld
 from hero import Hero
 from enemy import Enemy
-from weapon import iron_sword
+from weapon import iron_sword,short_bow
 from armor import plate_armors
 
 gameworld = GameWorld('Pythonomia')
-hero = Hero('Sir.Chadington','warrior',lvl=50)
+hero = Hero('Sir.Chadington','warrior',lvl=10)
 enemy = Enemy('Goblin')
-# print(hero.attrib)
-# print(enemy.equipped_armor('helm'))
-enemy.equip_items(iron_sword)
+hero.equip_items(iron_sword)
 # hero.equip_items(*plate_armors.values())
-hero.equip_items(plate_armors['helm'])
-print('enemy1',enemy.equipped_armor('helm'))
-print(enemy.equipped_wep())
-print(hero.equipped_wep())
-enemy2 = Enemy('Goblino')
-print(enemy2.equipped_armor('helm'))
-print(hero.equipped_armor('helm'))
-
-
-
-
-# print(hero.attrib)
-# print(hero.equipped_armor())
-# print(enemy.equipped_armor())
-# print(enemy.attrib)
-# print(enemy.equipped_wep())
+enemy.equip_items(short_bow)
 
 def main():
     fight()
         
 def fight() -> None:
     while True:
-        # screen_clear()
+        screen_clear()
 
         e_dmg,e_crit = hero.attack(enemy)
         h_dmg,h_crit = enemy.attack(hero)
@@ -52,9 +35,14 @@ def fight() -> None:
             input()
         else: 
             enemy.defeat() if hero.is_alive else hero.defeat()
-            hero.equipped_wep().check_durability()
+            # hero.equipped_wep().check_durability()
             # print(gameworld)
             # print(hero.lvl)
+            # print(hero.attrib)
+            # print(hero.life)
+            # print(hero.max_life)
+            # print(hero.equipped_armor())
+            # enemy.equipped_wep().check_durability()
             break
 
 def screen_clear() -> None:
