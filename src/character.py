@@ -24,13 +24,11 @@ class Character:
         self.c_class = c_class if c_class in c_classes else 'warrior'           #character class
         self.attrib = dict(init_attrib[self.c_class])                           #character attributes
         self.pos = pos if pos else (0,0)                                        #not currently used
-        '''
-        Had to hardcode equip for it not to be shared.
-        '''
-        self.equip = {'wep' : fists, 'armor' : 
-                {'helm' : leather_armors['helm'], 'body' : None, 
-                'gloves' : None, 'boots' : leather_armors['boots']}}            #equipment
+        self.equip = {  'wep' : None, 'armor' : {'helm' : None,
+                        'body' : None, 'gloves' : None, 'boots' : None}}        #empty equipment
         self.lvl = Level(lvl)                                                   #level, Level()
+        self.inv = None                                                         #have to add a None inv here
+        self.apply_starter_gear()                                               #adding starter gear
         self.apply_armor_effect()                                               #applies armor attributes to char
         self.calculate_health_mana()                                            #sets character life,mana from attrib
         self.is_alive = True                                                    #character is alive
@@ -49,16 +47,21 @@ class Character:
         for armor in self.equip['armor'].values():
             if armor: armor.apply_attrib(self)
         self.calculate_health_mana()
+
+    def apply_starter_gear(self):
+        self.equip_items(init_equip[self.c_class]['wep'])
+        self.equip_items(*init_equip[self.c_class]['armor'].values())
     
     def equip_items(self,*args):
         for item in args:
-            if item.get_item_type() == 'wep':
-                if self.inv: self.loot_item(self.equip['wep'])
-                self.equip['wep'] = item
-            else:
-                if self.equipped_armor(item.get_slot()) and self.inv:
-                    self.loot_item(self.equip['armor'][item.get_slot()])
-                self.equip['armor'][item.get_slot()] = item
+            if item:
+                if item.get_item_type() == 'wep':
+                    if self.inv: self.loot_item(self.equip['wep'])
+                    self.equip['wep'] = item
+                else:
+                    if self.equipped_armor(item.get_slot()) and self.inv:
+                        self.loot_item(self.equip['armor'][item.get_slot()])
+                    self.equip['armor'][item.get_slot()] = item
         self.apply_armor_effect()
 
     def equipped_wep(self) -> Weapon:

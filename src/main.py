@@ -12,10 +12,10 @@ from armor import plate_armors
 
 gameworld = GameWorld('Pythonomia')
 hero = Hero('Sir.Chadington','warrior',lvl=10)
-enemy = Enemy('Goblin')
+enemy = Enemy('Goblin','warrior')
 hero.equip_items(iron_sword)
-# hero.equip_items(*plate_armors.values())
 enemy.equip_items(short_bow)
+# hero.equip_items(*plate_armors.values())
 
 def main():
     fight()
@@ -35,13 +35,18 @@ def fight() -> None:
             input()
         else: 
             enemy.defeat() if hero.is_alive else hero.defeat()
+            '''
+            Lotsa testing. Don't mind me.
+            '''
             # hero.equipped_wep().check_durability()
             # print(gameworld)
             # print(hero.lvl)
             # print(hero.attrib)
+            # print(enemy.attrib)
             # print(hero.life)
             # print(hero.max_life)
             # print(hero.equipped_armor())
+            # print(enemy.equipped_armor())
             # enemy.equipped_wep().check_durability()
             break
 

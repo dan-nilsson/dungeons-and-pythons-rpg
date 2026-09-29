@@ -4,7 +4,6 @@ class Enemy(Character):
     def __init__(self,name,c_class=None,attrib=None,pos=None,equip=None,lvl=1):
         super().__init__(name,c_class,attrib,pos,equip,lvl)         #superclass Character init
         self.name = self.name_with_prefix()
-        self.inv = None
 
     def name_with_prefix(self):
         lvl = self.lvl.lvl
