@@ -14,10 +14,19 @@ gameworld = GameWorld('Pythonomia')
 hero = Hero('Sir.Chadington','warrior',lvl=50)
 enemy = Enemy('Goblin')
 # print(hero.attrib)
-print(enemy.equipped_armor())
-hero.equip_items(iron_sword)
-hero.equip_items(*plate_armors.values())
-print(enemy.equipped_armor())
+# print(enemy.equipped_armor('helm'))
+enemy.equip_items(iron_sword)
+# hero.equip_items(*plate_armors.values())
+hero.equip_items(plate_armors['helm'])
+print('enemy1',enemy.equipped_armor('helm'))
+print(enemy.equipped_wep())
+print(hero.equipped_wep())
+enemy2 = Enemy('Goblino')
+print(enemy2.equipped_armor('helm'))
+print(hero.equipped_armor('helm'))
+
+
+
 
 # print(hero.attrib)
 # print(hero.equipped_armor())
