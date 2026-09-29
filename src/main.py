@@ -4,8 +4,9 @@ Dungeons & Pythons
 '''
 
 from gameworld import GameWorld
-from character import Hero,Enemy
-from item import iron_sword
+from hero import Hero
+from enemy import Enemy
+from weapon import iron_sword
 
 gameworld = GameWorld('Pythonomia')
 hero = Hero('Sir.Chadington','warrior')
@@ -16,9 +17,10 @@ def main():
     while True:
         hero_dmg,hero_crit = hero.attack(enemy)
         enemy_dmg,enemy_crit = enemy.attack(hero)
-        print(hero_dmg,hero_crit)
-        print(hero.equip['armor']['helm'].name)
-        print(hero)
+
+        hero.hp_bar.draw(hero_dmg,hero_crit)
+        enemy.hp_bar.draw(enemy_dmg,enemy_crit)
+
         input()
 
 if __name__ == '__main__':

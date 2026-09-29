@@ -1,4 +1,5 @@
-from character import Hero,Enemy
+from hero import Hero
+from enemy import Enemy
 from location import Location
 
 class GameWorld:

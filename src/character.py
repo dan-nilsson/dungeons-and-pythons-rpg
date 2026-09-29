@@ -3,7 +3,9 @@ import random
 from level import Level
 from inventory import Inventory
 from quest import Quest
-from item import fists, linen_armors,leather_armors
+from weapon import fists
+from armor import linen_armors,leather_armors
+from healthbar import HealthBar
 
 c_classes = ['warrior','wizard','beast']
 init_attrib = { 'warrior' : {'stam' : 15, 'int' : 10, 'str' : 20, 'armor' : 0},
@@ -27,6 +29,7 @@ class Character:
         self.calculate_armor_effect()
         self.calculate_init_health_mana()                                       #sets character life,mana from attrib
         self.is_alive = True                                                    #character is alive
+        self.hp_bar = HealthBar(self)
 
     def __str__(self):
         return f'Character {self.name} with {self.life}/{self.max_life}'
@@ -58,11 +61,13 @@ class Character:
         final_dmg = dmg - self.attrib['armor']
         if final_dmg > 0: self.life -= final_dmg
         print(f'{self.name} takes {final_dmg} damage.')
+        self.hp_bar.update()
         if self.life <= 0: self.is_alive = False
         if not self.is_alive: self.defeat()
 
     def heal(self,amount):
         self.life += amount
+        self.hp_bar.update()
 
     def calculate_armor_effect(self):
         if not self.equip: return
@@ -70,49 +75,5 @@ class Character:
             if armor: armor.apply_attrib(self)
 
     def defeat(self):
-        suffix = 'defeated' if isinstance(self,Hero) else 'slain'
+        suffix = 'defeated' if self.char_type == 'hero' else 'slain'
         print(f'{self.name} is {suffix}.')
-
-class Hero(Character):
-    def __init__(self,name,c_class,attrib=None,pos=None,equip=None,lvl=None,gold=500,inv=None,quests=None):
-        super().__init__(name,c_class,attrib,pos,equip,lvl)      #superclass Character init
-        self.gold = gold                                            #player gold, not currently used
-        self.inv = inv if inv else Inventory()                      #player inventory
-        self.quests = quests if quests else []                      #player quests
-    
-    def accept_quest(self,quest):
-        self.quests.append(quest)
-
-    def get_inventory(self):
-        self.inv.list_items()
-
-    def loot_item(self, item) -> bool:
-        return self.inv.add_item(item)
-
-    def equip_item(self,item):
-        if item.get_type() == 'wep':
-            self.loot_item(self.equip['wep'])
-            self.equip['wep'] = item
-        else:
-            self.loot_item(self.equip['armor'][item.get_slot()])
-            self.equip['armor'][item.get_slot()] = item
-
-class Enemy(Character):
-    def __init__(self,name,c_class='warrior',attrib=None,pos=None,equip=None,lvl=None):
-        super().__init__(name,c_class,attrib,pos,equip,lvl)         #superclass Character init
-        self.name = self.name_with_prefix()
-
-    def aggro(self,target):     #not used
-        if abs(self.pos[0] - target.pos[0]) <= 2 or abs(self.pos[1] - target.pos[1]) <= 2:
-            self.attack(target)
-
-    def drop_loot(self):
-        return self.equip
-        
-    def name_with_prefix(self):
-        lvl = self.lvl.current_lvl
-        prefix = 'Timid' if lvl<10 else 'Trickster'
-        if lvl >= 55: prefix = 'Legendary'
-        elif lvl >= 45: prefix = 'Viscious'
-        elif lvl >= 35: prefix = 'Snarling'  
-        return f'{prefix} {self.name}'
