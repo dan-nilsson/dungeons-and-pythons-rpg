@@ -7,7 +7,7 @@ from weapon import fists
 from armor import linen_armors,leather_armors
 from healthbar import HealthBar
 
-c_classes = ['warrior','wizard','beast']
+c_classes = [   'warrior','wizard','beast']
 init_attrib = { 'warrior' : {'stam' : 15, 'int' : 10, 'str' : 20, 'armor' : 0},
                 'wizard' : {'stam': 1-5, 'int': 20, 'str': 10, 'armor' : 0}}
 init_equip = {  'warrior' : {'wep' : fists, 'armor' : 
@@ -19,33 +19,59 @@ init_equip = {  'warrior' : {'wep' : fists, 'armor' :
                 'beast' : None}
 
 class Character:
-    def __init__(self,name,c_class='warrior',attrib=None,pos=None,equip=None,lvl=None):
+    def __init__(self,name,c_class='warrior',attrib=None,pos=None,equip=None,lvl=1):
         self.name = name                                                        #character name
-        self.c_class = c_class                                                  #character class
-        self.attrib = attrib if attrib else init_attrib[c_class].copy()         #character attributes
+        self.c_class = c_class if c_class in c_classes else 'warrior'           #character class
+        self.attrib = dict(init_attrib[self.c_class])    #character attributes
         self.pos = pos if pos else (0,0)                                        #not currently used
-        self.equip = equip if equip else init_equip[c_class].copy()             #equipment
-        self.lvl = lvl if lvl else Level(1)                                     #level, Level()
-        self.calculate_armor_effect()                                           #applies armor attributes to char
-        self.calculate_init_health_mana()                                       #sets character life,mana from attrib
+        self.equip = dict(init_equip[self.c_class])                          #equipment
+        self.lvl = Level(lvl)                                                   #level, Level()
+        self.apply_armor_effect()                                               #applies armor attributes to char
+        self.calculate_health_mana()                                            #sets character life,mana from attrib
         self.is_alive = True                                                    #character is alive
         self.hp_bar = HealthBar(self)
+        print(init_attrib['warrior'])
+        print(self.attrib)
 
-    def __str__(self):
-        return f'{self.name}\'s HEALTH: {self.life}/{self.max_life}'
+    def __str__(self) -> str:
+        return f'{'{:<25}'.format(f'{self.lvl} {self.name}\'s')}' + f'HEALTH: {self.life}/{self.max_life}'
 
-    def calculate_init_health_mana(self):
+    def calculate_health_mana(self):
         self.max_life = self.attrib['stam'] * 10 + 500
         self.max_mana = self.attrib['int'] * 10 + 200
         self.life, self.mana = self.max_life, self.max_mana
 
-    def calculate_armor_effect(self):
+    def apply_armor_effect(self):
         if not self.equip: return
         for armor in self.equip['armor'].values():
-            if armor: armor.apply_attrib(self) 
+            if armor: armor.apply_attrib(self)
+        self.calculate_health_mana()
+    
+    def equip_items(self,*args):
+        for item in args:
+            if item.get_item_type() == 'wep':
+                # print('hello wep',item.get_item_type())
+                self.loot_item(self.equip['wep'])
+                self.equip['wep'] = item
+            else:
+                # print('hello arm',item.get_item_type())
+                if self.equipped_armor(item.get_slot()) and self.inv: 
+                    self.loot_item(self.equip['armor'][item.get_slot()])
+                self.equip['armor'][item.get_slot()] = item
+        self.apply_armor_effect()
+
+    # def equip_items(self,*args):
+        # for item in args:
+            # if item.get_item_type() == 'wep':
+                # self.equip(item,wep=True)
+            # else:
+                # self.equip(item,wep=False)
 
     def equipped_wep(self) -> Weapon:
         return self.equip['wep']
+
+    def equipped_armor(self,slot=None) -> {Armor}:
+        return self.equip['armor'] if not slot else self.equip['armor'][slot]
 
     def move(self,new_pos):
         self.pos = new_pos
@@ -72,7 +98,6 @@ class Character:
         # print(f'{self.name} takes {final_dmg} damage.') # no longer needed with healthbar impl
         self.hp_bar.update()
         if self.life <= 0: self.is_alive = False
-        if not self.is_alive: self.defeat()
         return final_dmg
 
     def heal(self,amount):
@@ -80,5 +105,5 @@ class Character:
         self.hp_bar.update()
 
     def defeat(self):
-        suffix = 'defeated' if self.char_type == 'hero' else 'slain'
-        print(f'{self.name} is {suffix}.')
+        suffix = 'has fallen' if self.char_type == 'hero' else 'is slain'
+        print(f'{self.name} {suffix}.')

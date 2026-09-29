@@ -11,25 +11,42 @@ from weapon import iron_sword
 from armor import plate_armors
 
 gameworld = GameWorld('Pythonomia')
-hero = Hero('Sir.Chadington','warrior')
-hero.equip_item(iron_sword)
-hero.equip_item(plate_armors['helm'])
+hero = Hero('Sir.Chadington','warrior',lvl=50)
 enemy = Enemy('Goblin')
+# print(hero.attrib)
+print(enemy.equipped_armor())
+hero.equip_items(iron_sword)
+hero.equip_items(*plate_armors.values())
+print(enemy.equipped_armor())
+
+# print(hero.attrib)
+# print(hero.equipped_armor())
+# print(enemy.equipped_armor())
+# print(enemy.attrib)
+# print(enemy.equipped_wep())
 
 def main():
+    fight()
+        
+def fight() -> None:
     while True:
-        screen_clear()
+        # screen_clear()
 
         e_dmg,e_crit = hero.attack(enemy)
         h_dmg,h_crit = enemy.attack(hero)
 
-        print('/'*10,'  FIGHT  ','/'*10)
+        print('/'*15,'  FIGHT  ','/'*15)
         hero.hp_bar.draw(h_dmg,h_crit)
         enemy.hp_bar.draw(e_dmg,e_crit)
 
-        # print(hero.inv)
-
-        input()
+        if hero.is_alive and enemy.is_alive:
+            input()
+        else: 
+            enemy.defeat() if hero.is_alive else hero.defeat()
+            hero.equipped_wep().check_durability()
+            # print(gameworld)
+            # print(hero.lvl)
+            break
 
 def screen_clear() -> None:
     if os.name == 'nt': os.system('cls')

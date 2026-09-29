@@ -15,7 +15,7 @@ class GameWorld:
         self.enemies = []
 
     def __str__(self):
-        return '\n'.join(*[row for row in locations])
+        return '\n'.join([str(row) for row in self.locations])
 
     def add_hero(self,hero):
         if not self.hero: self.hero = hero
