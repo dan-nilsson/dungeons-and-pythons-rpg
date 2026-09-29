@@ -4,18 +4,17 @@ class Item:
 
     def __init__(self,name,rarity='Common',attrib=None):
         self.name = name
-        self.rarity = rarity
-        self.attrib = attrib
+        self.rarity = rarity if rarity in self.item_rarities else 'Common'
+        self.attrib = attrib if attrib else dict()
         self.durability = 100
         self.broken = False
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.get_item_type() == 'wep':
             return f'Weapon: {self.rarity} {self.name} Damage: {self.calculate_damage(0)}'
-        return( f'{self.get_slot().capitalize()} Armor: {self.rarity} {self.name}'+
-                f' Attrib: {' '.join([f'{k.capitalize()} : {v}' for k,v in self.attrib.items()])}')
+        return( f'{self.get_slot().capitalize()} Armor: {self.rarity} {self.name} '+
+                f'Attrib: {' '.join([f'{k.capitalize()} : {v}' for k,v in self.attrib.items()])}')
         
-
     def apply_attrib(self,char):
         if not self.attrib: return
         for k,v in self.attrib.items():
@@ -28,6 +27,6 @@ class Item:
     def repair_durability(self):
         self.durability = 100
 
-    def check_durability(self):
+    def check_durability(self) -> int:
         print(f'Current durability for {self.name} is {self.durability}.')
         return self.durability

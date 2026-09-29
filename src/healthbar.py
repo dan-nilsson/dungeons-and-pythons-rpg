@@ -16,6 +16,7 @@ class HealthBar:
     def draw(self,damage=0,crit=False) -> None:
         num_filled = round(self.current / self.max * self.len)
         num_lost = self.len - num_filled
+        defend_action = f'-{damage}' if damage > 0 else 'DODGED' if damage == 0 else 'PARRIED'
         print(  self.char)
         print(  f'{self.end}{self.filled * num_filled}{self.empty * num_lost}{self.end}', 
-                f'  {f'-{damage}' if damage else 'DODGED'} {'CRITICAL!' if crit and damage else ''}')
+                f'  {defend_action} {'CRITICAL!' if crit and damage else ''}')

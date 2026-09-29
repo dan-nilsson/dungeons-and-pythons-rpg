@@ -20,13 +20,14 @@ def main():
     while True:
         screen_clear()
 
-        hero_dmg,hero_crit = hero.attack(enemy)
-        enemy_dmg,enemy_crit = enemy.attack(hero)
+        e_dmg,e_crit = hero.attack(enemy)
+        h_dmg,h_crit = enemy.attack(hero)
 
-        hero.hp_bar.draw(hero_dmg,hero_crit)
-        enemy.hp_bar.draw(enemy_dmg,enemy_crit)
+        print('/'*10,'  FIGHT  ','/'*10)
+        hero.hp_bar.draw(h_dmg,h_crit)
+        enemy.hp_bar.draw(e_dmg,e_crit)
 
-        print(hero.inv)
+        # print(hero.inv)
 
         input()
 

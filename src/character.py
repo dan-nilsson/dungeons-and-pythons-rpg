@@ -44,6 +44,9 @@ class Character:
         for armor in self.equip['armor'].values():
             if armor: armor.apply_attrib(self) 
 
+    def equipped_wep(self) -> Weapon:
+        return self.equip['wep']
+
     def move(self,new_pos):
         self.pos = new_pos
 
@@ -54,21 +57,23 @@ class Character:
         return target.defend(damage * (2 if crit else 1)), crit
 
     def defend(self,damage):
-        dodge = random.random() <= 0.2
-        if not dodge: 
-            self.take_dmg(damage)
-            return damage
-        else: 
-            print(f'{self.name} dodges the attack.')
-            return 0
+        dodge = random.random() <= 0.1
+        parry = (random.random() if not self.equip['wep'] == fists else 1) <= 0.1
+        if not dodge and not parry: 
+            return self.take_dmg(damage)
+        else:
+            if parry: self.equipped_wep().lose_durability(1)
+            # print(f'{self.name} {'dodges' if dodge else 'parries'} the attack.')
+            return 0 if dodge else -1
 
-    def take_dmg(self,dmg):
+    def take_dmg(self,dmg) -> float:
         final_dmg = dmg - self.attrib['armor']
         if final_dmg > 0: self.life -= final_dmg
-        print(f'{self.name} takes {final_dmg} damage.')
+        # print(f'{self.name} takes {final_dmg} damage.') # no longer needed with healthbar impl
         self.hp_bar.update()
         if self.life <= 0: self.is_alive = False
         if not self.is_alive: self.defeat()
+        return final_dmg
 
     def heal(self,amount):
         self.life += amount
