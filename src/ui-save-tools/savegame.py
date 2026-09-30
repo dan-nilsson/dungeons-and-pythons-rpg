@@ -2,22 +2,27 @@ import os
 
 local_dir = os.path.dirname(__file__)
 
-def save(state=[]):
-    savedata = ['test','line1','line2']
+def save(state=[],clear=False):
+    savedata = ['test','line1','line2'] if not state else state
 
     f = open(local_dir+'/.save','w')
-    for line in savedata:
-        f.write(str(line)+'\n')
+    if clear: pass
+    else:
+        for line in savedata:
+            f.write(str(line)+'\n')
     f.close()
-    print(local_dir)
 
 def load() -> [str]:
-    savedata = []
-
     f = open(local_dir+'/.save','r')
+    state = f.read().splitlines()
     f.close()
 
-    return savedata
+    return state
+
+def clear():
+    save(clear=True)
 
 # save()
+# print(load())
+# clear()
 # print(load())
