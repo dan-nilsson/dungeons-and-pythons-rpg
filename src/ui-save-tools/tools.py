@@ -2,7 +2,7 @@ import os, time
 
 menu_width = 50
 format_str = '{:^'+str(menu_width-2)+'s}'
-options = ['1. START GAME','2. LOAD GAME ','3. CREDITS   ', '4. QUIT GAME ']
+options = ['1. START GAME','2. SAVE GAME ','3. LOAD GAME ','4. CREDITS   ', '5. QUIT GAME ']
 side = '#'
 line = f'##{'-'*(menu_width-4)}##'
 splash_ascii = [' ','DUNGEONS &','PYTHONS',' ']
@@ -25,7 +25,7 @@ def screen_clear() -> None:
 def draw_lines_centered(lines) -> None:
     screen_clear()
     draw_sep()
-    print(print(*[side+format_str.format(l)+side for l in lines if l],sep='\n'))
+    print(*[side+format_str.format(l)+side for l in lines],sep='\n')
     draw_sep()
 
 def draw_sep() -> None:

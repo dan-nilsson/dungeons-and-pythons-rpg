@@ -12,25 +12,31 @@ while not select:
     active_game = 1
     
     menu()
-    inp = input('Make Selection (1-4) >>> ')
 
-    match inp:
+    match input('Make Selection (1-5) >>> '):
         case '1':
             screen_clear()
-            print('GAME STARTING')
-            input()
+            name = input('Enter your hero\'s name: ')
+            c_class = input('Pick Class 1.Warrior 2.Wizard: ')
         case '2':
+            if save_data: 
+                save(save_data)
+                print('GAME SAVED')
+                input()
+            else:
+                print('No game progress to save.')
+                input()
+        case '3':
             save_data = load()
             if not save_data: print('No data to load.')
             else: print('GAME STARTING')
             input()
-        case '3':
+        case '4':
             credits_screen()
             input()
-        case '4':
+        case '5':
             quit()
         case _:
             screen_clear()
             print('\n\n  Invalid selection.')
             time.sleep(2)
-            screen_clear()
