@@ -103,3 +103,4 @@ class Character:
     def defeat(self):
         suffix = 'has fallen' if self.char_type == 'hero' else 'is slain'
         print(f'{self.name} {suffix}.')
+        return self.drop_loot() if self.char_type == 'enemy' else None

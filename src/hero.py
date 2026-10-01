@@ -20,5 +20,9 @@ class Hero(Character):
     def get_inventory(self):
         self.inv.list_items()
 
-    def loot_item(self, item) -> bool:
-        return self.inv.add_item(item)
+    def recieve_loot(self,gold,*args):
+        self.gold += gold
+        self.loot_item(*args)
+
+    def loot_item(self, *args):
+        for i in args: self.inv.add_item(i)

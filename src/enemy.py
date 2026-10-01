@@ -1,9 +1,12 @@
+from random import randint
+
 from character import Character
 
 class Enemy(Character):
     def __init__(self,name,c_class=None,attrib=None,pos=None,equip=None,lvl=1):
         super().__init__(name,c_class,attrib,pos,equip,lvl)         #superclass Character init
         self.name = self.name_with_prefix()
+        self.drop_gold = lvl*10*randint(1,5)
 
     def name_with_prefix(self):
         lvl = self.lvl.lvl
@@ -21,4 +24,5 @@ class Enemy(Character):
             self.attack(target)
 
     def drop_loot(self):
-        return self.equip
+        print(self.drop_gold)
+        return self.drop_gold,[self.equip['wep']]+[a for a in self.equip['armor'].values()]
