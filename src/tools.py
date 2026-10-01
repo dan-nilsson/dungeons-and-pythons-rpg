@@ -16,12 +16,13 @@ def menu() -> None:
 
 def loot_screen(xp,gold,items) -> None:
     items = [str(i) for i in items]
-    draw_lines_centered([f'REWARDS:',f'XP: {xp}',f'GOLD: {gold}',]+items,max([len(i) for i in items])+10)
+    draw_lines_centered([f'REWARDS:',f'XP: {xp}',f'GOLD: {gold}',]+items,max([len(i) for i in items])+10,
+                        pad_over=1,pad_under=1)
     input()
 
 def show_inventory(hero) -> None:
     inv = ['INVENTORY:']+str(hero.inv).splitlines()
-    draw_lines_centered(inv,max([len(i) for i in inv])+10)
+    draw_lines_centered(inv,max([len(i) for i in inv])+10,pad_over=1,pad_under=1)
     input()
 
 def credits_screen() -> None:
@@ -37,18 +38,25 @@ def loading_screen() -> None:
         loading += 10
         time.sleep(random.uniform(0.1,0.4))
 
+def invalid_prompt() -> None:
+    draw_lines_centered(['Invalid Selection'],pad_over=2,pad_under=3)
+
 def screen_clear() -> None:
     if os.name == 'nt': os.system('cls')
     else: os.system('clear')
 
-def draw_lines_centered(lines,width=menu_width,pad_over=0,pad_under=0) -> None:
+def draw_lines_centered(lines,width=menu_width,pad_over=0,pad_under=0,pause=0) -> None:
     screen_clear()
     draw_sep(width,empty_under=pad_over)
     print(*[draw_line(l,width) for l in lines],sep='\n')
     draw_sep(width,empty_over=pad_under)
+    time.sleep(pause)
 
 def draw_line(line='',width=menu_width) -> str:
     return side+('{:^'+str(width-2)+'s}').format(line)+side
+
+def draw_line_left(line='',width=menu_width) -> str:
+    return side+('{:<'+str(width-2)+'s}').format(line)+side
 
 def draw_sep(width=menu_width,empty_over=0,empty_under=0) -> None:
     if empty_over: print(*[draw_line(width=width)]*empty_over,sep='\n')

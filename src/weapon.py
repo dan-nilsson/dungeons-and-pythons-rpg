@@ -14,7 +14,7 @@ class Weapon(Item):
     def calculate_damage(self,base):
        return base + (self.damage * self.rarity_scalar[self.rarity])
 
-iron_sword = Weapon('Iron Sword',wep_type='sharp',damage=50)
+iron_sword = Weapon('Iron Sword',wep_type='sharp',damage=70)
 wand = Weapon('Magic Wand',wep_type='magic',damage=100)
-short_bow = Weapon('Short bow',wep_type='bow',damage=30)
+short_bow = Weapon('Short bow',wep_type='bow',damage=50)
 fists = Weapon('Fists',wep_type='blunt',damage=1)

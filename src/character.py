@@ -96,11 +96,12 @@ class Character:
         if self.life <= 0: self.is_alive = False
         return final_dmg if final_dmg >= 0 else 0
 
-    def heal(self,amount):
-        self.life += amount
+    def heal(self):
+        self.life += self.max_life / 4
+        if self.life > self.max_life: self.life = self.max_life
         self.hp_bar.update()
 
-    def defeat(self):
-        suffix = 'has fallen' if self.char_type == 'hero' else 'is slain'
-        print(f'{self.name} {suffix}.')
-        return self.drop_loot() if self.char_type == 'enemy' else None
+    def defeat(self,opp) -> str:
+        if self.char_type == 'hero': header,suffix = 'DEFEAT...','has fallen'
+        else: header,suffix = 'VICTORY!','is slain'
+        return [header,f'{self.name} {suffix} by {opp}.']
