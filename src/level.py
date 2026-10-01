@@ -12,3 +12,11 @@ class Level:
 
     def gain_xp(self,xp):
         self.current_xp += xp
+        self.gain_level_check()
+
+    def gain_level_check(self):
+        if self.current_xp >= self.xp_per_level:
+            self.lvl += self.current_xp // self.xp_per_level
+            if self.lvl > self.max_lvl: self.lvl = self.max_lvl
+            self.current_xp = self.xp_per_level % self.current_xp
+

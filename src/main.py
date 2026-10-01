@@ -24,9 +24,9 @@ hero.equip_items(iron_sword)
 
 def main():
     mainmenu()
-    gold,item = fight(hero,enemy)
+    xp,gold,item = fight(hero,enemy)
 
-    loot_screen(gold,item)
+    loot_screen(xp,gold,item)
     show_inventory(hero)
     
 if __name__ == '__main__':

@@ -13,8 +13,9 @@ def title_splash():
 def menu() -> None:
     draw_lines_centered(options)
 
-def loot_screen(gold,items) -> None:
-    draw_lines_centered([f'LOOT:',f'Gold: {gold}','*items'])
+def loot_screen(xp,gold,items) -> None:
+    items = [str(i) for i in items]
+    draw_lines_centered([f'REWARDS:',f'XP: {xp}',f'GOLD: {gold}',]+items,max([len(i) for i in items])+10)
     input()
 
 def show_inventory(hero) -> None:

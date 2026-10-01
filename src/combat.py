@@ -28,10 +28,10 @@ def fight(hero,enemy):
             # print(enemy.equipped_armor())
             # enemy.equipped_wep().check_durability()
             if hero.is_alive:
-                gold,items = enemy.drop_loot()
+                xp,gold,items = enemy.give_reward()
                 enemy.defeat()
-                hero.recieve_loot(gold,*items)
-                return gold,items
+                hero.recieve_loot(xp,gold,*items)
+                return xp,gold,items
             else: 
                 hero.defeat()
-                return None,None
+                return None,None,None

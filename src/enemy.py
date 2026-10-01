@@ -23,6 +23,9 @@ class Enemy(Character):
         if abs(self.pos[0] - target.pos[0]) <= 2 or abs(self.pos[1] - target.pos[1]) <= 2:
             self.attack(target)
 
-    def drop_loot(self):
-        print(self.drop_gold)
-        return self.drop_gold,[self.equip['wep']]+[a for a in self.equip['armor'].values()]
+    def calculate_drop_items(self) -> [Item]:
+        return list(filter( lambda x: x is not None, 
+                            [self.equip['wep']]+[a for a in self.equip['armor'].values()]))
+
+    def give_reward(self):
+        return self.lvl.lvl*100,self.drop_gold,self.calculate_drop_items()

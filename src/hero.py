@@ -20,7 +20,8 @@ class Hero(Character):
     def get_inventory(self):
         self.inv.list_items()
 
-    def recieve_loot(self,gold,*args):
+    def recieve_loot(self,xp,gold,*args):
+        self.lvl.gain_xp(xp)
         self.gold += gold
         self.loot_item(*args)
 
