@@ -1,5 +1,7 @@
 import os
 
+from hero import Hero
+
 local_dir = os.path.dirname(__file__)
 
 def save(state=[],clear=False):
@@ -22,7 +24,14 @@ def load() -> [str]:
 def clear():
     save(clear=True)
 
-# save()
-# print(load())
-# clear()
-# print(load())
+def create_save(hero):
+    save_data =[hero.name,
+                hero.c_class,
+                str(hero.pos),
+                str(hero.lvl.lvl),
+                str(hero.gold)]
+    save(save_data)
+
+def read_load() -> Hero:
+    s = load()
+    return Hero(name=s[0],c_class=s[1],pos=tuple(s[2]),lvl=int(s[3]),gold=int(s[4]))

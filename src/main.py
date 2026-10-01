@@ -17,19 +17,21 @@ from armor import plate_armors
 def main():
     active = False
     gameworld = None
-    hero = None
+    gamehero = None
     enemy = Enemy('Goblin','warrior')
     enemy.equip_items(short_bow)
     # hero.equip_items(*plate_armors.values())
     
     while True:
-        game,hero = mainmenu(active)
-        w_name,h_name,h_class = game[0],hero[0],hero[1]
+        game,hero,reset = mainmenu(active,gameworld,gamehero)
 
-        gameworld = GameWorld(w_name)
-        hero = Hero(h_name,h_class)
-        hero.equip_items(iron_sword)
-        active = True
+        if not active or reset:
+            gameworld = game if game else GameWorld('Pythomania')
+            gamehero = hero if hero else Hero('Default')
+            gamehero.equip_items(iron_sword)
+            enemy.reset()
+            active = True
+
         xp,gold,item = fight(hero,enemy)
 
         loot_screen(xp,gold,item)

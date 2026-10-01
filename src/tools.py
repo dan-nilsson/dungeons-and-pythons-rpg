@@ -11,11 +11,11 @@ def title_splash():
     draw_lines_centered(splash_ascii,pad_over=2,pad_under=2)
     time.sleep(2.5)
 
-def menu() -> None:
+def menu_screen() -> None:
     draw_lines_centered(options)
 
 def loot_screen(xp,gold,items) -> None:
-    items = [str(i) for i in items]
+    items = [str(i) for i in items if i]
     draw_lines_centered([f'REWARDS:',f'XP: {xp}',f'GOLD: {gold}',]+items,max([len(i) for i in items])+10,
                         pad_over=1,pad_under=1)
     input()
@@ -39,7 +39,10 @@ def loading_screen() -> None:
         time.sleep(random.uniform(0.1,0.4))
 
 def invalid_prompt() -> None:
-    draw_lines_centered(['Invalid Selection'],pad_over=2,pad_under=3)
+    draw_lines_centered(['Invalid Selection'],pad_over=2,pad_under=3,pause=1)
+
+def game_screen(lines) -> None:
+    draw_lines_centered(lines)
 
 def screen_clear() -> None:
     if os.name == 'nt': os.system('cls')

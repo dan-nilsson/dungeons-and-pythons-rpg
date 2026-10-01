@@ -96,8 +96,8 @@ class Character:
         if self.life <= 0: self.is_alive = False
         return final_dmg if final_dmg >= 0 else 0
 
-    def heal(self):
-        self.life += self.max_life / 4
+    def heal(self,full=False):
+        self.life += self.max_life / 4 if not full else self.max_life
         if self.life > self.max_life: self.life = self.max_life
         self.hp_bar.update()
 

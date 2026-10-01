@@ -1,22 +1,23 @@
-import os, time
+from tools import ( title_splash, loading_screen, menu_screen, credits_screen, invalid_prompt,
+                    draw_sep, screen_clear, draw_lines_centered)
+from savegame import create_save, read_load, clear
+from hero import Hero
+from gameworld import GameWorld
 
-from tools import ( title_splash, loading_screen, menu, credits_screen, draw_sep, screen_clear, invalid_prompt,
-                    draw_lines_centered)
-from savegame import save, load, clear
-
-def mainmenu(active=False) -> None:
+def mainmenu(active=False,in_game=None,in_hero=None):
     select = 0
     active_game = active
-    save_data = []
+    game = in_game
+    hero = in_hero
 
-    while not select:
+    while True:
         if not active_game:
             title_splash()
             loading_screen()
             
         active_game = True
 
-        menu()
+        menu_screen()
 
         match input('Select (1-5) >>> '):
             case '1':
@@ -25,20 +26,26 @@ def mainmenu(active=False) -> None:
                 name = input('Hero\'s name: ')
                 print('Classes: 1. warrior 2. wizard')
                 c_class = input('Hero class: ')
-                return ['Pythomania'],[name,c_class]
+                return GameWorld('Pythomania'),Hero(name,c_class),True
             case '2':
-                if save_data: 
-                    save(save_data)
+                if hero: 
+                    create_save(hero)
                     draw_lines_centered(['GAME SAVED'],pad_over=3,pad_under=3)
                     input()
                 else:
                     draw_lines_centered(['NO GAME TO SAVE'],pad_over=3,pad_under=3)
                     input()
             case '3':
-                save_data = load()
-                if not save_data: draw_lines_centered(['NO GAME TO LOAD'],pad_over=3,pad_under=3,pause=2)
+                try:
+                    hero = read_load()
+                except OSError:
+                    draw_lines_centered(['NO GAME TO LOAD'],pad_over=3,pad_under=3,pause=2)
+                if game and hero:
+                    draw_lines_centered(['GAME LOADED'],pad_over=3,pad_under=3)
+                    input()
+                    return game,hero,True
                 else:
-                    return ['Pythomania'],['LoadName','warrior']
+                    return None,None,None
             case '4':
                 credits_screen()
                 input()
@@ -46,4 +53,3 @@ def mainmenu(active=False) -> None:
                 quit()
             case _:
                 invalid_prompt()
-                time.sleep(1)

@@ -4,7 +4,7 @@ from character import Character
 
 class Enemy(Character):
     def __init__(self,name,c_class=None,attrib=None,pos=None,equip=None,lvl=1):
-        super().__init__(name,c_class,attrib,pos,equip,lvl)         #superclass Character init
+        super().__init__(name,c_class,attrib,pos,equip,lvl)
         self.name = self.name_with_prefix()
         self.drop_gold = lvl*10*randint(1,5)
 
@@ -22,6 +22,10 @@ class Enemy(Character):
     def aggro(self,target):     #not used
         if abs(self.pos[0] - target.pos[0]) <= 2 or abs(self.pos[1] - target.pos[1]) <= 2:
             self.attack(target)
+
+    def reset(self):
+        self.is_alive = True
+        self.heal(full=True)
 
     def calculate_drop_items(self) -> [Item]:
         return list(filter( lambda x: x is not None, 
