@@ -1,27 +1,19 @@
-from tools import ( title_splash, loading_screen, menu, credits_screen, draw_sep, screen_clear, invalid_prompt,
-                    draw_lines_centered)
+from tools import game_screen, game_screen_option, invalid_prompt
 
 def gamemenu(world,hero) -> None:
     while True:
 
-        game_screen()
+        game_screen(world,hero)
+        game_screen_option()
 
         match input('Select (1-5) >>> '):
             case '1':
-                screen_clear()
-                draw_sep()
-                name = input('Hero\'s name: ')
-                print('Classes: 1. warrior 2. wizard')
-                c_class = input('Hero class: ')
-                return ['Pythomania'],[name,c_class]
+                pass
             case '2':
                 pass
             case '3':
                 pass
-            case '4':
-                credits_screen()
-                input()
             case '5':
-                quit()
+                return
             case _:
                 invalid_prompt()

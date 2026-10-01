@@ -5,6 +5,7 @@ Dungeons & Pythons
 import os
 
 from mainmenu import mainmenu
+from gamemenu import gamemenu
 from combat import fight
 from tools import loot_screen, show_inventory, screen_clear
 
@@ -31,6 +32,8 @@ def main():
             gamehero.equip_items(iron_sword)
             enemy.reset()
             active = True
+
+        gamemenu(gameworld,gamehero)
 
         xp,gold,item = fight(hero,enemy)
 

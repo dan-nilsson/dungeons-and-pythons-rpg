@@ -18,3 +18,9 @@ class Inventory:
 
     def remove_item(self,item):
         self.items.remove(item)
+
+    def inventory_status(self):
+        return f'{'FULL' if self.is_full() else f'{len(self.items)} / {self.size}'}'
+
+    def is_full(self):
+        return len(self.items) == self.size
