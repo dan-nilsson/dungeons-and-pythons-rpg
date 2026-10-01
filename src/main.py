@@ -14,20 +14,26 @@ from enemy import Enemy
 from weapon import iron_sword,short_bow
 from armor import plate_armors
 
-
-gameworld = GameWorld('Pythonomia')
-hero = Hero('Sir.Chadington','warrior',lvl=10)
-enemy = Enemy('Goblin','warrior')
-hero.equip_items(iron_sword)
-# enemy.equip_items(short_bow)
-# hero.equip_items(*plate_armors.values())
-
 def main():
-    mainmenu()
-    xp,gold,item = fight(hero,enemy)
+    gameworld = None
+    hero = None
+    enemy = Enemy('Goblin','warrior')
+    # enemy.equip_items(short_bow)
+    # hero.equip_items(*plate_armors.values())
+    
+    while True:
+        game,hero = mainmenu()
+        w_name,h_name,h_class = game[0],hero[0],hero[1]
 
-    loot_screen(xp,gold,item)
-    show_inventory(hero)
+        gameworld = GameWorld(w_name)
+        hero = Hero(h_name,h_class)
+        hero.equip_items(iron_sword)
+
+        xp,gold,item = fight(hero,enemy)
+
+        loot_screen(xp,gold,item)
+        show_inventory(hero)
+        break
     
 if __name__ == '__main__':
     main()

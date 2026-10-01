@@ -1,4 +1,7 @@
-from tools import screen_clear
+from tools import screen_clear, draw_sep, draw_line
+
+fight_header = f'{'/'*20}  FIGHT  {'/'*20}'
+width = 60
 
 def fight(hero,enemy):
     while True:
@@ -7,9 +10,11 @@ def fight(hero,enemy):
         e_dmg,e_crit = hero.attack(enemy)
         h_dmg,h_crit = enemy.attack(hero)
 
-        print('/'*15,'  FIGHT  ','/'*15)
+        draw_sep(width)
+        print(fight_header)
         hero.hp_bar.draw(h_dmg,h_crit)
         enemy.hp_bar.draw(e_dmg,e_crit)
+        draw_sep(width)
 
         if hero.is_alive and enemy.is_alive:
             input()
