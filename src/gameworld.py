@@ -1,4 +1,4 @@
-import random
+import random, copy
 
 from hero import Hero
 from enemy import Enemy
@@ -32,8 +32,11 @@ class GameWorld:
         if not self.enemies: self.current_location().is_hostile = False
         return enemy
 
+    def reset_map(self):
+        self.add_locations()
+
     def add_locations(self,*args):      #will impl loop later
-        self.locations = locations
+        self.locations = copy.deepcopy(locations)
         # for loc in args:
         #     for row in range(len(self.locations)):
         #         for col in range(len(self.locations[row])):

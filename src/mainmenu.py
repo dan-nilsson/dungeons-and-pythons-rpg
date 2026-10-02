@@ -14,9 +14,8 @@ def mainmenu(active=False,in_game=None,in_hero=None):
         if not active_game:
             title_splash()
             loading_screen()
-            
-        active_game = True
-
+            active_game = True
+    
         menu_screen()
 
         match input('Select (1-5) >>> '):

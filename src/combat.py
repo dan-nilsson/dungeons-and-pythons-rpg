@@ -34,5 +34,5 @@ def fight(hero,enemy):
                 hero.recieve_loot(xp,gold,*items)
                 return xp,gold,items
             else: 
-                draw_lines_aligned(hero.defeat(enemy.name_with_prefix),width=width,pad_over=2,pad_under=3,pause=3)
+                draw_lines_aligned(hero.defeat(enemy.name),width=width,pad_over=2,pad_under=3,pause=3)
                 return None,None,None

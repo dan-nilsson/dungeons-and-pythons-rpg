@@ -19,12 +19,13 @@ def main():
     enemy = None
     
     while True:
+
         game,hero,reset = mainmenu(active,gameworld,gamehero)
 
         if not active or reset:
             gameworld = game
             gamehero = hero
-            if not gameworld or not gamehero: continue
+            if not gameworld and not gamehero: continue
             gamehero.equip_items(iron_sword)
             gameworld.add_hero(gamehero)
             active = True

@@ -28,8 +28,6 @@ class Character:
                         'body' : None, 'gloves' : None, 'boots' : None}}        #empty equipment
         self.lvl = Level(lvl)                                                   #level, Level()
         self.inv = None                                                         #have to add a None inv here
-        self.life,self.max_life = 0,0
-        self.mana,self.max_mana = 0,0
         self.apply_starter_gear()                                               #adding starter gear
         self.apply_armor_effect()                                               #applies armor attributes to char
         self.calculate_health_mana()                                            #sets character life,mana from attrib
@@ -42,8 +40,7 @@ class Character:
     def calculate_health_mana(self):
         self.max_life = self.attrib['stam'] * 10 + 500
         self.max_mana = self.attrib['int'] * 10 + 200
-        if not self.life and not self.mana:
-            self.life, self.mana = self.max_life, self.max_mana
+        self.life, self.mana = self.max_life, self.max_mana
 
     def apply_armor_effect(self):
         if not self.equip: return

@@ -72,6 +72,10 @@ def screen_clear() -> None:
     if os.name == 'nt': os.system('cls')
     else: os.system('clear')
 
+'''
+General drawing functions for UI-elements. clears screen. Paints the contents within borders.
+Aligned to left or centered. With padding for empty bordered lines and pause for time.sleep().
+'''
 def draw_lines_aligned( lines,width=menu_width,align='center',
                         pad_side=0,pad_over=0,pad_under=0,pause=0,clear=True) -> None:
     if clear: screen_clear()
