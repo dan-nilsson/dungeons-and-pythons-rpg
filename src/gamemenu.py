@@ -19,6 +19,7 @@ def gamemenu(world,hero) -> None:
             enemy = world.pick_enemy()
             attack_splash(enemy)
             xp,gold,item = fight(hero,enemy)
+            if not hero.is_alive: return
             loot_screen(xp,gold,item)
             show_inventory(hero)
         if had_fight:

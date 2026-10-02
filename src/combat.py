@@ -11,7 +11,7 @@ def fight(hero,enemy):
         match choice.lower():
             case '2' | 'heal':
                 hero.heal()
-                e_dmg,h_crit = 0,False
+                e_dmg,e_crit = 0,False
                 h_dmg,h_crit = enemy.attack(hero)
             case _:
                 e_dmg,e_crit = hero.attack(enemy)

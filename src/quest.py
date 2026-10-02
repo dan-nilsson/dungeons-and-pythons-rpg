@@ -1,3 +1,7 @@
+'''
+Never implemeted usage of Quest in game loop
+'''
+
 from objective import Objective
 
 class Quest:
@@ -13,5 +17,5 @@ class Quest:
                 f'Reward: {reward[0]}XP and {reward[1]}gold')
 
     def give_reward(self,char):
-        char.gain_xp(self.reward[0])
-        char.gold += reward[1]
+        xp,gold = self.reward
+        char.recieve_loot(xp,gold)

@@ -16,7 +16,7 @@ def menu_screen() -> None:
     draw_lines_aligned(options)
 
 def loot_screen(xp,gold,items) -> None:
-    items = [str(i) for i in items if i]
+    items = [str(i) for i in items if i] if items else ['']
     draw_lines_aligned([f'REWARDS:',f'XP: {xp}',f'GOLD: {gold}',]+items,max([len(i) for i in items])+10,
                         pad_over=1,pad_under=1)
     input()

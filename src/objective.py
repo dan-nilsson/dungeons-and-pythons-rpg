@@ -1,3 +1,7 @@
+'''
+Didn't end up using.
+'''
+
 standard_desc = 'Kill 1 Boar'
 
 class Objective:

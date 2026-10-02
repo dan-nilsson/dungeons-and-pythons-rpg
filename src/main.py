@@ -16,19 +16,17 @@ def main():
     active = False
     gameworld = None
     gamehero = None
-    enemy = Enemy('Goblin','warrior')
-    enemy.equip_items(short_bow)
-    # hero.equip_items(*plate_armors.values())
+    enemy = None
     
     while True:
         game,hero,reset = mainmenu(active,gameworld,gamehero)
 
         if not active or reset:
-            gameworld = game if game else GameWorld('Pythomania')
-            gamehero = hero if hero else Hero('Default')
+            gameworld = game
+            gamehero = hero
+            if not gameworld or not gamehero: continue
             gamehero.equip_items(iron_sword)
             gameworld.add_hero(gamehero)
-            enemy.reset()
             active = True
 
         gamemenu(gameworld,gamehero)

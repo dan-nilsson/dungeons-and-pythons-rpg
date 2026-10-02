@@ -38,6 +38,7 @@ def mainmenu(active=False,in_game=None,in_hero=None):
             case '3':
                 try:
                     hero = read_load()
+                    game = game if game else GameWorld('Pythomania')
                 except OSError:
                     draw_lines_aligned(['NO GAME TO LOAD'],pad_over=3,pad_under=3,pause=2)
                 if game and hero:
