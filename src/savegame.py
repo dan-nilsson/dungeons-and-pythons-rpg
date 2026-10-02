@@ -30,8 +30,10 @@ def create_save(hero):
                 str(hero.pos),
                 str(hero.lvl.lvl),
                 str(hero.gold)]
-    save(save_data)
+    try: save(save_data)
+    except OSError: print('No write permission.')
 
 def read_load() -> Hero:
-    s = load()
+    try: s = load()
+    except OSError: print('File not found.')
     return Hero(name=s[0],c_class=s[1],pos=tuple(s[2]),lvl=int(s[3]),gold=int(s[4]))

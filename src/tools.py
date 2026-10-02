@@ -2,7 +2,7 @@ import os, time, random
 
 menu_width = 50
 options = ['DUNGEONS & PYTHONS','1. START GAME','2. SAVE GAME ','3. LOAD GAME ','4. CREDITS   ', '5. QUIT GAME ']
-game_options = '1. N    2. S    3. E    4. W    5. MENU'
+# game_options = '1. N    2. S    3. W    4. E    5. MENU'
 side = '#'
 splash_ascii = ['DUNGEONS &','PYTHONS']
 cred = ['Daniel Nilsson']
@@ -39,13 +39,20 @@ def loading_screen() -> None:
         loading += 10
         time.sleep(random.uniform(0.1,0.4))
 
+def attack_splash(enemy) -> None:
+    draw_lines_aligned([f'{enemy.name} has attacked you.'],menu_width,pad_over=2,pad_under=3,pause=3)
+
+def cleared_splash(location) -> None:
+    draw_lines_aligned([f'{location.name_with_prefix()} has been cleared','of all foes!'],menu_width,pad_over=2,pad_under=2,pause=3)
+
 def invalid_prompt() -> None:
     draw_lines_aligned(['Invalid Selection'],pad_over=2,pad_under=3,pause=1)
 
 def game_screen(world,hero) -> None:
     width = menu_width+10
-    loc =  (f'LOCATION : {world.current_location().name_with_prefix() if world.current_location() else 'village'} '+
-            f'{'[Hostile]' if world.current_location().is_hostile else '[Safe]'}')
+    loc = world.current_location()
+    loc =  (f'LOCATION : {loc.name_with_prefix()} {loc.biome.capitalize()} '+
+            f'{'[Hostile]' if loc.is_hostile else '[Safe]'}')
     lines =[f'NAME : {hero.name}',
             f'HEALTH: {hero.hp_bar.draw(onlybar=True,cust_len=20)} {hero.life} / {hero.max_life}',
             f'LVL: {hero.lvl.lvl}   ( {hero.lvl.current_xp} / {hero.lvl.xp_per_level} XP )',
@@ -57,7 +64,7 @@ def game_screen(world,hero) -> None:
     print(draw_line_center(loc,width))
     draw_lines_aligned(lines,width,align='left',pad_side=3,clear=False)
 
-def game_screen_option():
+def game_screen_option(game_options):
         print(draw_line_center(game_options,menu_width+10))
         draw_sep(menu_width+10)
 

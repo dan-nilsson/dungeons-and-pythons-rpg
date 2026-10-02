@@ -3,6 +3,7 @@ class Location:
     biome_to_enemy = {  'forest': ['Wolf','Bandit'],
                         'field' : ['Cougar','Ruffian'],
                         'cave' : ['Bear','Ghost'],
+                        'village' : ['Donkey','Thief'],
                         'desert' : ['Scorpion','Snake'],
                         'boss_lair' : ['Dragon']}
 
@@ -27,7 +28,7 @@ class Location:
         return f'{prefix.capitalize()} {self.name}'
 
     def enemy_types(self):
-        return biome_to_enemy[self.biome] if self.is_hostile else None
+        return self.biome_to_enemy[self.biome] if self.is_hostile else None
 
 locations =[[Location('Pythonburg','village'),Location('Greensholme','forest',True),Location('Sandsweep','desert',True)],
             [Location('Bear Home','cave',True),Location('Treewoods','forest',True),Location('Aridania','desert',True)],

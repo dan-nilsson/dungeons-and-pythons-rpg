@@ -2,8 +2,6 @@
 Python Fundamentals Project - Fantasy Adventure / RPG Game
 Dungeons & Pythons
 '''
-import os
-
 from mainmenu import mainmenu
 from gamemenu import gamemenu
 from combat import fight
@@ -13,7 +11,6 @@ from gameworld import GameWorld
 from hero import Hero
 from enemy import Enemy
 from weapon import iron_sword,short_bow
-from armor import plate_armors
 
 def main():
     active = False
@@ -30,15 +27,11 @@ def main():
             gameworld = game if game else GameWorld('Pythomania')
             gamehero = hero if hero else Hero('Default')
             gamehero.equip_items(iron_sword)
+            gameworld.add_hero(gamehero)
             enemy.reset()
             active = True
 
         gamemenu(gameworld,gamehero)
-
-        xp,gold,item = fight(hero,enemy)
-
-        loot_screen(xp,gold,item)
-        show_inventory(hero)
     
 if __name__ == '__main__':
     main()
